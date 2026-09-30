@@ -1,0 +1,9 @@
+langgraph
+langchain-core
+langchain-groq
+chromadb
+sentence-transformers
+yfinance
+requests
+streamlit
+pandas

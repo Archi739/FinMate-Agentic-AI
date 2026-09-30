@@ -1,0 +1,11 @@
+question,expected_route
+What is the share price of TCS right now?,stock
+Current price of HDFC Bank stock,stock
+How much is Reliance trading at today?,stock
+Latest price of Infosys shares,stock
+Give me the live price of Maruti Suzuki,stock
+Convert 25000 INR to USD,currency
+How many euros is 100000 rupees?,currency
+Convert 500 USD to INR,currency
+What is 2000 GBP in INR?,currency
+What is today's date?,datetime
