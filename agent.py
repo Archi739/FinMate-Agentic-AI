@@ -22,8 +22,35 @@ ROUTES = {"retrieve", "stock", "currency", "datetime", "memory"}
 llm = ChatGroq(model=MODEL, temperature=0)
 _client = chromadb.PersistentClient(path="chroma_db")
 _embed = embedding_functions.SentenceTransformerEmbeddingFunction(model_name="all-MiniLM-L6-v2")
-collection = _client.get_or_create_collection("companies", embedding_function=_embed,
-                                              metadata={"hnsw:space": "cosine"})
+collection = _client.get_or_create_collection(
+    "companies",
+    embedding_function=_embed,
+    metadata={"hnsw:space": "cosine"}
+)
+
+# Build the knowledge base automatically when running on a fresh deployment.
+# This is needed because the generated ChromaDB files are not stored in GitHub.
+if collection.count() == 0:
+    import glob
+    import os
+
+    for path in sorted(glob.glob("data/*.md")):
+        name = os.path.splitext(os.path.basename(path))[0]
+
+        if name.startswith("_"):
+            continue
+
+        text = open(path, encoding="utf-8").read()
+        m = re.search(r"^Sector:\s*(.+)$", text, re.M)
+
+        collection.upsert(
+            ids=[name],
+            documents=[text],
+            metadatas=[{
+                "company": name,
+                "sector": m.group(1).strip() if m else "unknown"
+            }]
+        )
 
 
 # ---------- helpers ----------

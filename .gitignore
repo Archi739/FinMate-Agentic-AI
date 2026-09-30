@@ -2,5 +2,6 @@
 __pycache__/
 *.pyc
 .env
+chroma_db/
 .agents/
 .claude/
